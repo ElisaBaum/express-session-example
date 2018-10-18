@@ -7,6 +7,7 @@ import * as session from "express-session";
 
 import {initAuthentication} from "./auth";
 
+const sessionCookieName = 'express-session-example-app';
 const staticResourcesPath = path.join(__dirname, 'public');
 
 export const app = express();
@@ -15,6 +16,7 @@ initAuthentication();
 
 app.use(express.static(staticResourcesPath));
 app.use(session({
+  name: sessionCookieName,
   secret: 'secret key',
   resave: false,
   saveUninitialized: false,
@@ -49,5 +51,8 @@ app.get('/test', (req: Request, res: Response) => {
 
 app.get('/logout', (req: Request, res: Response) => {
   req.logout();
-  res.send("You're logged out.");
+  req.session && req.session.destroy(() => {
+    res.clearCookie(sessionCookieName);
+    res.send("You're logged out.");
+  });
 });
