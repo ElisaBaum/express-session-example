@@ -1,0 +1,20 @@
+# tmp
+.DS_Store
+
+# lib
+node_modules
+
+# IDE
+.idea
+*.iml
+
+# build
+*.js
+*.js.map
+
+# test
+.nyc_output
+coverage
+
+# migrations
+!migrations/*.js
